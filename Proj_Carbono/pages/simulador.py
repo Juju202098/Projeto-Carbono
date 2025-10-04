@@ -2,6 +2,37 @@ import streamlit as st
 
 st.set_page_config(page_title="Simulador", layout="wide")
 
+# ------------------------------
+# Logo no topo
+# ------------------------------
+col1, col2 = st.columns([8, 2])
+
+with col1:
+    st.image("images/logo.png", width=220)
+
+with col2:
+    st.markdown(
+        """
+        <a href="/carteira" style="text-decoration:none;">
+            <button style="
+                background-color: #31572c;
+                color: white;
+                border: none;
+                padding: 12px 0;          
+                width: 160px;            
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 600;
+                display: flex;
+                align-items: center;      
+                justify-content: center;  
+                margin-top: 20px;        
+            ">Minha Carteira</button>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+
 st.title("Calcule sua pegada de carbono")
 
 st.write("Preencha os dados abaixo para simular seu impacto ambiental:")

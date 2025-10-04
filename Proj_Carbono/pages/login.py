@@ -8,6 +8,11 @@ import hashlib
 st.set_page_config(page_title="Login / Cadastro", layout="wide")
 
 # -----------------------------
+# Logo no topo
+# -----------------------------
+st.image("images/logo.png", width=220) 
+
+# -----------------------------
 # Banco de dados SQLite
 # -----------------------------
 conn = sqlite3.connect("users.db")
@@ -50,7 +55,17 @@ def register_user(username, password):
 if "show_signup" not in st.session_state:
     st.session_state.show_signup = False
 
-# Alterna entre login e cadastro
+# Para controlar navegação
+if "page" not in st.session_state:
+    st.session_state.page = "login"  # default
+
+# Se o usuário está logado, vai direto para carteira
+if st.session_state.get("logged_in"):
+    st.experimental_rerun()  # força atualização e redirecionamento
+
+# -----------------------------
+# Login / Cadastro
+# -----------------------------
 if not st.session_state.show_signup:
     with st.form("login_form"):
         st.subheader("Login")
@@ -60,41 +75,22 @@ if not st.session_state.show_signup:
 
         if submitted:
             if check_login(username, password):
-                st.success(f"Bem-vindo, {username}!")
-                st.write("Aqui vai o conteúdo protegido da aplicação.")
+                st.session_state.logged_in = True
+                st.session_state.username = username
             else:
                 st.error("Usuário ou senha incorretos.")
 
     if st.button("Não possui cadastro? Clique aqui para se cadastrar"):
         st.session_state.show_signup = True
 
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
-            background-color: #A9A9A9;
-            color: white;
-        }
-        </style>
-        """, unsafe_allow_html=True
-    )
-
 else:
-    st.subheader("Cadastro de Usuário")
-    with st.form("signup_form"):
-        new_user = st.text_input("Escolha um nome de usuário")
-        new_password = st.text_input("Escolha uma senha", type="password")
-        confirm_password = st.text_input("Confirme a senha", type="password")
-        registered = st.form_submit_button("Cadastrar")
+    # cadastro (igual ao seu código)
+    ...
 
-        if registered:
-            if new_password != confirm_password:
-                st.error("As senhas não coincidem.")
-            elif register_user(new_user, new_password):
-                st.success("Cadastro realizado com sucesso! Volte ao login.")
-                st.session_state.show_signup = False
-            else:
-                st.error("Usuário já existe. Escolha outro nome.")
-    
-    if st.button("Voltar ao login"):
-        st.session_state.show_signup = False
+# -----------------------------
+# Redirecionamento para carteira
+# -----------------------------
+if st.session_state.get("logged_in"):
+    # mostra página de carteira diretamente
+    st.write(f"Bem-vindo à sua carteira, {st.session_state.username}!")
+    # aqui você coloca o código da página de carteira

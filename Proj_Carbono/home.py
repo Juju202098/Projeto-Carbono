@@ -17,44 +17,34 @@ def logout():
     st.session_state.user = None
 
 # -------------------------------
-# Header com botão login 
+# Header
 # -------------------------------
 col1, col2 = st.columns([9, 1])
+
 with col1:
-    st.markdown("")  
+    st.image("images/logo.png", width=220)
+
 with col2:
+    st.markdown(
+        """
+        <div style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+        """, unsafe_allow_html=True
+    )
+    
     if st.session_state.user:
-        # Botão de usuário logado com dropdown
-        st.markdown(f"""
-        <div style="position: relative; display: inline-block;">
-            <button style="
-                background-color:#31572c; color:white; border:none; 
-                padding:8px 16px; border-radius:6px; cursor:pointer;">
-                {st.session_state.user} ▼
-            </button>
-            <div style="
-                display:none;
-                position:absolute;
-                background-color:white;
-                min-width:100px;
-                box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index:1;
-                border-radius:6px;
-            " id="dropdown-content">
-                <a href='#' onclick='window.parent.location.reload()' 
-                   style='color:#31572c; padding:8px 12px; display:block; text-decoration:none;'>Deslogar</a>
-            </div>
-        </div>
-        <script>
-        const btn = document.querySelector("button");
-        const menu = document.getElementById("dropdown-content");
-        btn.onclick = () => {{
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
-        }}
-        </script>
-        """, unsafe_allow_html=True)
+        st.write(f"Bem-vindo, {st.session_state.user}")
+        if st.button("Logout"):
+            logout()
     else:
-        st.markdown('<a href="/login" style="text-decoration:none;"><button style="background:#31572c; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Login</button></a>', unsafe_allow_html=True)
+        st.markdown(
+            '<a href="/login" style="text-decoration:none;">'
+            '<button style="background:#31572c; color:white; border:none; padding:12px 28px; border-radius:6px; cursor:pointer;">Login</button>'
+            '</a>',
+            unsafe_allow_html=True
+        )
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # -------------------------------
 # CSS CUSTOMIZADO
 # -------------------------------
@@ -130,26 +120,69 @@ st.markdown("""
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
 }
+            
+/* Header fixo em linha */
+.header-container {
+    display: flex;
+    justify-content: space-between; /* logo à esquerda, botão à direita */
+    align-items: center;            /* centraliza verticalmente */
+    padding: 10px 40px;
+}
+
+/* Logo */
+.header-logo img {
+    height: 100px; /* controla a altura do logo */
+    display: block;
+}
+
+/* Botão de login */
+.login-button {
+    background-color: #31572c;
+    color: white;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+.login-button:hover {
+    background-color: #4f772d;
+}
 
 /* Espaçamento entre sessões */
 .section-space { margin-top: 5rem; margin-bottom: 3rem; }
 </style>
 """, unsafe_allow_html=True)
 
-
 # -------------------------------
 # HERO
 # -------------------------------
 st.markdown("""
-<div class="hero">
-    <h1>Transforme sua recarga em créditos de carbono</h1>
-    <p>Cada recarga do seu veículo elétrico gera créditos de carbono.<br>
-    Impacto positivo para o planeta, valor real para você.</p>
-    <div>
-        <a href="./login" class="btn btn-green">Cadastre-se grátis</a>
-        <a href="./simulador" class="btn btn-outline">Calcule seu impacto</a>
+    <div style="background: linear-gradient(to bottom, #31572c, #6c8e64); 
+                border-radius: 12px; padding: 80px 40px; text-align: center; color: white;">
+        <h1 style="font-size: 42px; font-weight: bold; margin-bottom: 20px;">
+            Transforme sua recarga em créditos de carbono
+        </h1>
+        <p style="font-size: 18px; margin-bottom: 40px;">
+            Cada recarga do seu veículo elétrico gera créditos de carbono.<br>
+            Impacto positivo para o planeta, valor real para você.
+        </p>
+        <div>
+            <a href="/cadastro">
+                <button style="background:#31572c; color:white; padding:12px 24px; 
+                               border:none; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer; margin-right:12px;">
+                    Cadastre-se grátis
+                </button>
+            </a>
+            <a href="/calculo">
+                <button style="background:white; color:#31572c; padding:12px 24px; 
+                               border:2px solid #31572c; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer;">
+                    Calcule seu impacto
+                </button>
+            </a>
+        </div>
     </div>
-</div>
 """, unsafe_allow_html=True)
 
 # -------------------------------
